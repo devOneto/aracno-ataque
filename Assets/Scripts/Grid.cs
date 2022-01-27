@@ -10,12 +10,14 @@ public class Grid
     private float cellSize;
     private int[,] gridArray;
     private TextMesh[,] debugTextArray;
+    private Vector3 originPosition;
 
-    public Grid(int width, int height, float cellSize)
+    public Grid(int width, int height, float cellSize, Vector3 originPosition)
     {
         this.width = width;
         this.height = height;
         this.cellSize = cellSize;
+        this.originPosition = originPosition;
         this.gridArray = new int[width, height];
         this.debugTextArray = new TextMesh[width, height];
 
@@ -37,19 +39,22 @@ public class Grid
 
     private int[] GetGridCoord(Vector3 worldPosition)
     {
-        int x = Mathf.FloorToInt(worldPosition.x / cellSize);
-        int y = Mathf.FloorToInt(worldPosition.y / cellSize);
-        int y = Mathf.FloorToInt(worldPosition.y / cellSize);
-        return [x,y];
+        int[] coord = new int[2];
+        int x = Mathf.FloorToInt(worldPosition.x - originPosition.x / cellSize);
+        int y = Mathf.FloorToInt(worldPosition.y - originPosition.y/ cellSize);
+        coord[0] = x;
+        coord[1] = y;
+        return coord;
     }
 
     private Vector3 GetWorldPosition(int x, int y)
     {
-        return new Vector3(x, y) * cellSize;
+        return new Vector3(x, y) * cellSize + originPosition;
     }
 
     public void SetValue(int x, int y, int value) 
     {
+        //Debug.Log(x + " " + y + " " + value);
         if(x >= 0 && y >= 0 && x < width && y < height)
         {
             gridArray[x, y] = value;
@@ -61,9 +66,33 @@ public class Grid
     public void SetValue(Vector3 worldPosition, int value)
     {
         int[] coord = GetGridCoord(worldPosition);
-        int x = Mathf.FloorToInt(worldPosition[0]);
-        int y = Mathf.FloorToInt(worldPosition[1]);
+        int x = Mathf.FloorToInt(coord[0]);
+        int y = Mathf.FloorToInt(coord[1]);
+        //Debug.Log(coord[0] + " " +coord[1]);
+        //Debug.Log(value);
         SetValue(x, y, value);
+    }
+
+    public int GetValue(int x, int y)
+    {
+        if (x >= 0 && y >= 0 && x < width && y < height)
+        {
+            return gridArray[x, y];
+        }
+        return 0;
+    }
+
+    public int GetValue(Vector3 worldPosition)
+    {
+        int[] coord = GetGridCoord(worldPosition);
+        int x = coord[0];
+        int y = coord[1];
+        if (x >= 0 && y >= 0 && x < width && y < height)
+        {
+            return gridArray[x, y];
+        }
+        return 0;
+
     }
 
    
