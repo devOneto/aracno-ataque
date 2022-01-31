@@ -5,10 +5,10 @@ using UnityEngine;
 
 public class Testing : MonoBehaviour
 {
-    private Grid<int> grid;
+    private Grid<GridObject> grid;
     private void Start()
     {
-        grid = new Grid<int>(3, 3, 10f, new Vector3(0,20));
+        grid = new Grid<GridObject>(10, 10, 10f, new Vector3(-50,-50), () => new GridObject());
     }
     private void Update()
     {
@@ -16,13 +16,24 @@ public class Testing : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             mousePosition = UtilsClass.GetMouseWorldPosition();
-            grid.SetValue(mousePosition,56);
+            //grid.SetValue(mousePosition,true);
         }
         if (Input.GetMouseButtonDown(1))
         {
             mousePosition = UtilsClass.GetMouseWorldPosition();
-            grid.GetValue(mousePosition);
+            grid.GetGridObject(mousePosition);
+            Debug.Log(mousePosition);
+            //https://youtu.be/8jrAWtI8RXg?list=PLzDRvYVwl53uhO8yhqxcyjDImRjO9W722&t=445
         }
     }
 
+}
+
+class GridObject
+{
+    public int value;
+    public void addValue(int addValue) 
+    {
+        this.value += addValue;
+    }
 }
