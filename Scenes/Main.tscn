@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Scenes/Tank.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Scripts/Tank.gd" type="Script" id=2]
+
+[node name="Main" type="Node2D"]
+
+[node name="Tank" parent="." instance=ExtResource( 1 )]
+position = Vector2( 517, 506 )
+scale = Vector2( 0.3, 0.3 )
+script = ExtResource( 2 )
